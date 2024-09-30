@@ -570,23 +570,23 @@ private:
                            typename debug_void<decltype(__VA_ARGS__)>::type> \
          : std::true_type {};
     DEBUG_COND(is_ostream_ok, std::declval<std::ostream &>()
-                                  << std::declval<T const &>());
+                                  << std::declval<T const &>())
     DEBUG_COND(is_range, begin(std::declval<T const &>()) !=
-                             end(std::declval<T const &>()));
-    DEBUG_COND(is_tuple, std::tuple_size<T>::value);
-    DEBUG_COND(is_member_repr, std::declval<T const &>().DEBUG_REPR_NAME());
+                             end(std::declval<T const &>()))
+    DEBUG_COND(is_tuple, std::tuple_size<T>::value)
+    DEBUG_COND(is_member_repr, std::declval<T const &>().DEBUG_REPR_NAME())
     DEBUG_COND(is_member_repr_stream, std::declval<T const &>().DEBUG_REPR_NAME(
-                                          std::declval<std::ostream &>()));
-    DEBUG_COND(is_adl_repr, DEBUG_REPR_NAME(std::declval<T const &>()));
+                                          std::declval<std::ostream &>()))
+    DEBUG_COND(is_adl_repr, DEBUG_REPR_NAME(std::declval<T const &>()))
     DEBUG_COND(is_adl_repr_stream,
                DEBUG_REPR_NAME(std::declval<std::ostream &>(),
-                               std::declval<T const &>()));
+                               std::declval<T const &>()))
     DEBUG_COND(is_member_repr_debug,
                std::declval<T const &>().DEBUG_FORMATTER_REPR_NAME(
-                   std::declval<debug_formatter const &>()));
+                   std::declval<debug_formatter const &>()))
     DEBUG_COND(is_adl_repr_debug, DEBUG_FORMATTER_REPR_NAME(
                                       std::declval<debug_formatter const &>(),
-                                      std::declval<T const &>()));
+                                      std::declval<T const &>()))
 
     struct variant_test_lambda {
         std::ostream &oss;
@@ -596,32 +596,32 @@ private:
     };
 
 # if __cpp_lib_variant
-    DEBUG_COND(is_variant, std::variant_size<T>::value);
+    DEBUG_COND(is_variant, std::variant_size<T>::value)
 # else
     template <class>
     struct debug_cond_is_variant : std::false_type {};
 # endif
     DEBUG_COND(is_smart_pointer, static_cast<void const volatile *>(
-                                     std::declval<T const &>().get()));
+                                     std::declval<T const &>().get()))
     DEBUG_COND(is_optional, (((void)*std::declval<T const &>(), (void)0),
-                             ((void)(bool)std::declval<T const &>(), (void)0)));
+                             ((void)(bool)std::declval<T const &>(), (void)0)))
     DEBUG_COND(
         reference_wrapper,
         (typename std::enable_if<
             std::is_same<typename T::type &,
                          decltype(std::declval<T const &>().get())>::value,
-            int>::type)0);
+            int>::type)0)
 # define DEBUG_CON(n, ...) \
      template <class T> \
      struct debug_cond_##n : debug_bool_constant<__VA_ARGS__> {};
     DEBUG_CON(string, std::is_convertible<T, DEBUG_STRING_VIEW>::value ||
-                          std::is_convertible<T, std::string>::value);
-    DEBUG_CON(bool, std::is_same<T, bool>::value);
+                          std::is_convertible<T, std::string>::value)
+    DEBUG_CON(bool, std::is_same<T, bool>::value)
     DEBUG_CON(char, std::is_same<T, char>::value ||
-                        std::is_same<T, signed char>::value);
+                        std::is_same<T, signed char>::value)
     DEBUG_CON(error_code, std::is_same<T, std::errc>::value ||
                               std::is_same<T, std::error_code>::value ||
-                              std::is_same<T, std::error_condition>::value);
+                              std::is_same<T, std::error_condition>::value)
 # if __cpp_char8_t
     DEBUG_CON(unicode_char, std::is_same<T, char8_t>::value ||
                                 std::is_same<T, char16_t>::value ||
@@ -630,19 +630,19 @@ private:
 # else
     DEBUG_CON(unicode_char, std::is_same<T, char16_t>::value ||
                                 std::is_same<T, char32_t>::value ||
-                                std::is_same<T, wchar_t>::value);
+                                std::is_same<T, wchar_t>::value)
 # endif
 # if DEBUG_UNSIGNED_AS_HEXADECIMAL
     DEBUG_CON(integral_unsigned,
-              std::is_integral<T>::value &&std::is_unsigned<T>::value);
+              std::is_integral<T>::value &&std::is_unsigned<T>::value)
 # else
-    DEBUG_CON(integral_unsigned, false);
+    DEBUG_CON(integral_unsigned, false)
 # endif
-    DEBUG_CON(integral, std::is_integral<T>::value);
-    DEBUG_CON(floating_point, std::is_floating_point<T>::value);
+    DEBUG_CON(integral, std::is_integral<T>::value)
+    DEBUG_CON(floating_point, std::is_floating_point<T>::value)
     DEBUG_CON(pointer, std::is_pointer<T>::value ||
-                           std::is_same<T, std::nullptr_t>::value);
-    DEBUG_CON(enum, std::is_enum<T>::value);
+                           std::is_same<T, std::nullptr_t>::value)
+    DEBUG_CON(enum, std::is_enum<T>::value)
     template <class T, class = void>
     struct debug_format_trait;
 
